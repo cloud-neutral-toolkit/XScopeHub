@@ -1,0 +1,40 @@
+{
+  "servers": {
+    "xscopehub": {
+      "url": "http://localhost:8000/mcp",
+      "description": "XScopeHub MCP Server - Cloud observability and AI insight service"
+    }
+  },
+  "tools": {
+    "xscopehub": {
+      "query_logs": {
+        "description": "查询日志数据",
+        "parameters": {
+          "limit": { "type": "number", "default": 100, "description": "返回的日志条数" },
+          "time": { "type": "string", "description": "时间范围，例如: 1h, 6h, 1d" },
+          "level": { "type": "string", "enum": ["info", "warn", "error"], "description": "日志级别过滤" }
+        }
+      },
+      "summarize_alerts": {
+        "description": "汇总告警信息",
+        "parameters": {
+          "time": { "type": "string", "default": "1h", "description": "时间范围，例如: 1h, 6h, 1d" },
+          "severity": { "type": "string", "enum": ["critical", "warning", "info"], "description": "告警级别过滤" }
+        }
+      },
+      "get_metrics": {
+        "description": "获取指标数据",
+        "parameters": {
+          "metric_name": { "type": "string", "description": "指标名称" },
+          "time": { "type": "string", "default": "1h", "description": "时间范围" }
+        }
+      },
+      "get_topology": {
+        "description": "获取系统拓扑信息",
+        "parameters": {
+          "service": { "type": "string", "description": "服务名称（可选）" }
+        }
+      }
+    }
+  }
+}
