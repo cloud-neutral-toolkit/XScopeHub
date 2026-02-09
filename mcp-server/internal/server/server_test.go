@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/xscopehub/mcp-server/internal/plugins"
 	"github.com/xscopehub/mcp-server/internal/registry"
 	"github.com/xscopehub/mcp-server/pkg/manifest"
 )
@@ -14,8 +15,13 @@ import (
 func TestServeHTTPResourcesList(t *testing.T) {
 	mf := manifest.Manifest{Name: "xscopehub"}
 	reg := registry.New()
-	reg.RegisterResources(registry.StaticResources())
-	reg.RegisterTools(registry.StaticTools())
+
+	// Register Plugins
+	obsPlugin := plugins.NewObservabilityPlugin()
+	if err := reg.RegisterPlugin(obsPlugin); err != nil {
+		t.Fatalf("failed to register observability plugin: %v", err)
+	}
+
 	srv := New(Options{Manifest: mf, Registry: reg})
 
 	payload := map[string]interface{}{

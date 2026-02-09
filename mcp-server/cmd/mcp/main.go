@@ -14,6 +14,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/xscopehub/mcp-server/internal/plugins"
 	"github.com/xscopehub/mcp-server/internal/registry"
 	"github.com/xscopehub/mcp-server/internal/server"
 	"github.com/xscopehub/mcp-server/pkg/manifest"
@@ -55,8 +56,12 @@ func serve(args []string) {
 	}
 
 	reg := registry.New()
-	reg.RegisterResources(registry.StaticResources())
-	reg.RegisterTools(registry.StaticTools())
+
+	// Register Plugins
+	obsPlugin := plugins.NewObservabilityPlugin()
+	if err := reg.RegisterPlugin(obsPlugin); err != nil {
+		log.Fatalf("failed to register observability plugin: %v", err)
+	}
 
 	srv := server.New(server.Options{
 		Manifest:     mf,
